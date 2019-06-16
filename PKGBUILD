@@ -13,17 +13,17 @@ url='http://linuxecke.volkoh.de/vokoscreen/vokoscreen.html'
 license=('GPL2')
 
 depends=(
-	'qt5-x11extras' 'qt5-multimedia' 'ffmpeg' 'lame'
-	'lsof' 'pulseaudio-alsa' 'xdg-utils'
+    'qt5-x11extras' 'qt5-multimedia' 'ffmpeg' 'lame'
+    'lsof' 'pulseaudio-alsa' 'xdg-utils'
 )
 makedepends=('qt5-tools' 'libxrandr')
 provides=("${_pkgrealname}")
 conflicts=("${_pkgrealname}-git" "${_pkgrealname}")
 
 source=(
-	"${_pkgrealname}-${_pkgver}.tar.gz::https://github.com/vkohaupt/${_pkgrealname}/archive/${_pkgver}.tar.gz"
-	'desktop_file.patch'
-	'fix_lrelease.patch'
+    "${_pkgrealname}-${_pkgver}.tar.gz::https://github.com/vkohaupt/${_pkgrealname}/archive/${_pkgver}.tar.gz"
+    'desktop_file.patch'
+    'fix_lrelease.patch'
 )
 sha512sums=(
     'dd9e25ec9ab7eeddb99aeeac3865f4306d741c78cb81b6a62fcc9d366270446683eadc483bc65637e30b639764ea978ae290baabfcb9ae298ad63fb040a805f6'
@@ -32,31 +32,31 @@ sha512sums=(
 )
 
 prepare() {
-	cd "${srcdir}"/${_pkgrealname}-${_pkgver}
+    cd "${srcdir}"/${_pkgrealname}-${_pkgver}
 
-	# Fix lrelease path
-	patch -Np1 < ../fix_lrelease.patch
+    # Fix lrelease path
+    patch -Np1 < ../fix_lrelease.patch
 
-	# Desktop file description
-	patch -Np1 < ../desktop_file.patch
+    # Desktop file description
+    patch -Np1 < ../desktop_file.patch
 
-	# Create build directory
-	mkdir -p "${srcdir}"/build
+    # Create build directory
+    mkdir -p "${srcdir}"/build
 }
 
 build() {
-	# Building package
-	cd "${srcdir}"/build
-	qmake-qt5 ../${_pkgrealname}-${_pkgver} \
-		QMAKE_CFLAGS="${CFLAGS}" \
-		QMAKE_CXXFLAGS="${CXXFLAGS}" \
-		CONFIG+=release \
-		CONFIG+=c++14
-	make
+    # Building package
+    cd "${srcdir}"/build
+    qmake-qt5 ../${_pkgrealname}-${_pkgver} \
+        QMAKE_CFLAGS="${CFLAGS}" \
+        QMAKE_CXXFLAGS="${CXXFLAGS}" \
+        CONFIG+=release \
+        CONFIG+=c++14
+    make
 }
 
 package() {
-	# Installing package
-	cd "${srcdir}"/build
-	make INSTALL_ROOT="${pkgdir}" install
+    # Installing package
+    cd "${srcdir}"/build
+    make INSTALL_ROOT="${pkgdir}" install
 }
